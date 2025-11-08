@@ -74,3 +74,39 @@ export function validatePhone(phoneRaw) {
   if (/^0/.test(ddd)) return false;
   return true;
 }
+
+// Email validation
+export function validateEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email.trim());
+}
+
+// Máscaras para formatação
+export function maskCPF(value) {
+  const digits = onlyDigits(value);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+  if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9, 11)}`;
+}
+
+export function maskPhone(value) {
+  const digits = onlyDigits(value);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+}
+
+export function maskDate(value) {
+  const digits = onlyDigits(value);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4, 8)}`;
+}
+
+export function maskMoney(value) {
+  const num = parseFloat(value) || 0;
+  return num.toFixed(2).replace('.', ',');
+}
