@@ -1,0 +1,29 @@
+{
+  "name": "techmarket",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Camila-Falaschi/techmarket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Camila-Falaschi/techmarket/issues"
+  },
+  "homepage": "https://github.com/Camila-Falaschi/techmarket#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "next": "^16.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sass": "^1.93.3"
+  }
+}

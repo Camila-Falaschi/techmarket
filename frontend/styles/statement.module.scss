@@ -1,0 +1,92 @@
+.container {
+  padding: 12px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.summary {
+  margin: 12px 0;
+  font-size: 1.125rem;
+}
+
+.transactions {
+  display: grid;
+  gap: 10px;
+}
+
+/* Desktop: table-like */
+@media(min-width: 720px) {
+  .transactions {
+    display: block;
+  }
+  .transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+/* Mobile: card layout */
+.transaction {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(16,24,40,0.04);
+}
+
+.transaction .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.transaction .meta {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.transaction .code {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.transaction .amount {
+  font-weight: 700;
+}
+
+.transaction .accounts {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.highlight {
+  border-left: 6px solid #ff9900;
+  background: #fff7ec;
+}
+
+.loading { padding: 12px; color: #666; }
+
+.empty { padding: 12px; color: #666; }
+
+.footer {
+  display:flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+}
