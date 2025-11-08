@@ -1,92 +1,192 @@
 .container {
-  padding: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .header {
+  margin-bottom: 24px;
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #1a1a1a;
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  input, select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+  
+  button {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    align-self: flex-end;
+    
+    &:hover {
+      background: #0056b3;
+    }
+  }
+}
+
+.summary {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.transactions {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.controls {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.summary {
-  margin: 12px 0;
-  font-size: 1.125rem;
-}
-
-.transactions {
-  display: grid;
-  gap: 10px;
-}
-
-/* Desktop: table-like */
-@media(min-width: 720px) {
-  .transactions {
-    display: block;
+.transaction {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  
+  .code {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
   }
-  .transaction {
+  
+  .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+  }
+  
+  .meta {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  
+  .accounts {
+    font-size: 13px;
+    color: #888;
+    display: flex;
+    gap: 12px;
   }
 }
 
-/* Mobile: card layout */
-.transaction {
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(16,24,40,0.04);
-}
-
-.transaction .row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.transaction .meta {
-  font-size: 0.85rem;
-  color: #444;
-}
-
-.transaction .code {
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.transaction .amount {
-  font-weight: 700;
-}
-
-.transaction .accounts {
-  display: flex;
-  gap: 10px;
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #666;
-}
-
 .highlight {
-  border-left: 6px solid #ff9900;
-  background: #fff7ec;
+  border-left: 4px solid #007bff;
+  background: #f0f7ff;
 }
 
-.loading { padding: 12px; color: #666; }
+.loading, .empty {
+  padding: 40px;
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+}
 
-.empty { padding: 12px; color: #666; }
+.error {
+  color: #dc3545;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: normal;
+}
 
 .footer {
-  display:flex;
+  display: flex;
   justify-content: center;
+  align-items: center;
   gap: 16px;
-  margin-top: 12px;
+  margin-top: 32px;
+  
+  button {
+    padding: 8px 16px;
+    background: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    
+    &:hover {
+      background: #007bff;
+      color: white;
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  
+  span {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+// Responsivo simples
+@media (max-width: 600px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .controls {
+    flex-direction: column;
+    
+    label {
+      width: 100%;
+    }
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .transaction .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .transaction .accounts {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
