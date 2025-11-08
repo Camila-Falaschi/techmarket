@@ -18,7 +18,7 @@ export default function AccountForm() {
   const [email, setEmail] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [phone, setPhone] = useState('');
-  const [initialBalance, setInitialBalance] = useState('0.00');
+  const [initialBalance, setInitialBalance] = useState('');
   const [errors, setErrors] = useState({});
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
