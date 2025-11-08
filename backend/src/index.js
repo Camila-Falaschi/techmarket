@@ -10,7 +10,6 @@ app.use(cors());
 
 app.use('/api', routes);
 
-// health
 app.get('/health', (req, res) => res.json({ ok: true }));
 
 const port = process.env.PORT || 3001;
