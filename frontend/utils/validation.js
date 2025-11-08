@@ -3,11 +3,11 @@ export function onlyDigits(str = '') {
   return (str || '').toString().replace(/\D/g, '');
 }
 
-// CPF validation (11 digits, check digits)
+// Validação de CPF (11 dígitos, dígitos verificadores)
 export function validateCPF(cpfRaw) {
   const cpf = onlyDigits(cpfRaw);
   if (!cpf || cpf.length !== 11) return false;
-  // rejects same digit sequences
+  // Rejeita sequências de dígitos iguais (ex: 111.111.111-11)
   if (/^(\d)\1+$/.test(cpf)) return false;
 
   const toInt = (s) => parseInt(s, 10);
@@ -27,12 +27,12 @@ export function validateCPF(cpfRaw) {
   return dv1 === toInt(cpf[9]) && dv2 === toInt(cpf[10]);
 }
 
-// Date of birth validation: accepts YYYY-MM-DD or DD/MM/YYYY
+// Validação da Data de Nascimento: aceita YYYY-MM-DD ou DD/MM/YYYY
 export function validateBirthDate(dateStr) {
   if (!dateStr) return false;
-  // normalize separators
-  const isoPattern = /^\d{4}-\d{2}-\d{2}$/;
-  const brPattern = /^\d{2}\/\d{2}\/\d{4}$/;
+  // Padrões Regex para os formatos ISO (Americano) e BR (Brasileiro)
+  const isoPattern = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
+  const brPattern = /^\d{2}\/\d{2}\/\d{4}$/; // DD/MM/AAAA
 
   let year, month, day;
 
@@ -47,42 +47,43 @@ export function validateBirthDate(dateStr) {
   const date = new Date(year, month - 1, day);
   if (Number.isNaN(date.getTime())) return false;
 
-  // Check constructed date matches components (avoid 31/02 -> rolls over)
+  // Checagem extra: garante que o Date não "corrigiu" uma data inválida
+  // (ex: 31/02/2000 viraria 02/03/2000. Isso impede essa "correção")
   if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
     return false;
   }
 
   const now = new Date();
-  // Not in the future
+  // Não pode ser uma data no futuro
   if (date > now) return false;
 
-  // Reasonable age: 0 < age <= 120
+  // Validação de idade razoável (entre 0 e 120 anos)
   const age = now.getFullYear() - year - ((now.getMonth() < month - 1 || (now.getMonth() === month - 1 && now.getDate() < day)) ? 1 : 0);
   if (age < 0 || age > 120) return false;
 
   return true;
 }
 
-// Phone validation: after removing non-digits, must be 10 or 11 digits (BR)
+// Validação de Telefone: após remover não-dígitos, deve ter 10 ou 11 dígitos (BR)
 export function validatePhone(phoneRaw) {
   const phone = onlyDigits(phoneRaw);
   if (!phone) return false;
-  // Accept 10 (landline + DDD) or 11 (mobile with 9)
+  // Aceita 10 (fixo + DDD) ou 11 (móvel com 9 + DDD)
   if (phone.length !== 10 && phone.length !== 11) return false;
-  // DDD cannot start with 0
+  // O DDD (dois primeiros dígitos) não pode começar com 0
   const ddd = phone.slice(0, 2);
   if (/^0/.test(ddd)) return false;
   return true;
 }
 
-// Email validation
+// Validação de Email (básica)
 export function validateEmail(email) {
   if (!email || typeof email !== 'string') return false;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email.trim());
 }
 
-// Máscaras para formatação
+// --- Funções de Máscara (Formatação) ---
 export function maskCPF(value) {
   const digits = onlyDigits(value);
   if (digits.length <= 3) return digits;
