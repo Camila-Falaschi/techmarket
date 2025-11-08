@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import api from '../lib/api';
 import { validateCPF, validateBirthDate, validatePhone } from '../utils/validation';
-import '../styles/globals.scss';
 
 export default function AccountForm() {
   const [owner, setOwner] = useState('');
