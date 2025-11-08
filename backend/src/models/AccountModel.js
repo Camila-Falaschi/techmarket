@@ -2,10 +2,11 @@
 const pool = require('../config/db');
 
 class AccountModel {
-  static async create({ owner, initial_balance = 0 }) {
+  static async create({ owner, cpf, email, birth_date, phone, initial_balance = 0 }) {
     const [result] = await pool.query(
-      'INSERT INTO accounts (owner, balance) VALUES (?, ?)',
-      [owner, initial_balance]
+      `INSERT INTO accounts (owner, cpf, email, birth_date, phone, balance) 
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [owner, cpf, email, birth_date, phone, initial_balance]
     );
     const insertId = result.insertId;
     const [rows] = await pool.query('SELECT * FROM accounts WHERE id = ?', [insertId]);
@@ -14,6 +15,16 @@ class AccountModel {
 
   static async findById(id) {
     const [rows] = await pool.query('SELECT * FROM accounts WHERE id = ?', [id]);
+    return rows[0] || null;
+  }
+
+  static async findByCPF(cpf) {
+    const [rows] = await pool.query('SELECT * FROM accounts WHERE cpf = ?', [cpf]);
+    return rows[0] || null;
+  }
+
+  static async findByEmail(email) {
+    const [rows] = await pool.query('SELECT * FROM accounts WHERE email = ?', [email]);
     return rows[0] || null;
   }
 

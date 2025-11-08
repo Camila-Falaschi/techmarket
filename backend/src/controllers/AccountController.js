@@ -1,27 +1,64 @@
-const AccountModel = require('../models/AccountModel');
+const AccountService = require('../services/AccountService');
 
 class AccountController {
   static async create(req, res) {
     try {
-      const { owner, initial_balance } = req.body;
-      if (!owner) return res.status(400).json({ error: 'owner é obrigatório' });
-      const account = await AccountModel.create({ owner, initial_balance });
+      const { owner, cpf, email, birth_date, phone, initial_balance } = req.body;
+
+      const account = await AccountService.createAccount({
+        owner,
+        cpf,
+        email,
+        birth_date,
+        phone,
+        initial_balance
+      });
+
       res.status(201).json(account);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: err.message });
+
+      // Erros de validação (400)
+      if (err.message.includes('obrigatório') ||
+        err.message.includes('inválido') ||
+        err.message.includes('deve ter') ||
+        err.message.includes('deve ser')) {
+        return res.status(400).json({ error: err.message });
+      }
+
+      // Erros de duplicata (409)
+      if (err.message.includes('já cadastrado')) {
+        return res.status(409).json({ error: err.message });
+      }
+
+      // Erros do MySQL
+      if (err.code === 'ER_DUP_ENTRY') {
+        if (err.message.includes('cpf')) {
+          return res.status(409).json({ error: 'CPF já cadastrado' });
+        }
+        if (err.message.includes('email')) {
+          return res.status(409).json({ error: 'E-mail já cadastrado' });
+        }
+      }
+
+      // Erro genérico (500)
+      res.status(500).json({ error: 'Erro ao criar conta' });
     }
   }
 
   static async getById(req, res) {
     try {
       const id = Number(req.params.id);
-      const acc = await AccountModel.findById(id);
-      if (!acc) return res.status(404).json({ error: 'Conta não encontrada' });
-      res.json(acc);
+      const account = await AccountService.getAccountById(id);
+      res.json(account);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: err.message });
+
+      if (err.message === 'Conta não encontrada') {
+        return res.status(404).json({ error: err.message });
+      }
+
+      res.status(500).json({ error: 'Erro ao buscar conta' });
     }
   }
 }

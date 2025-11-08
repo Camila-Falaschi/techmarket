@@ -6,8 +6,14 @@ USE techmarket;
 CREATE TABLE IF NOT EXISTS accounts (
   id INT AUTO_INCREMENT PRIMARY KEY,
   owner VARCHAR(255) NOT NULL,
+  cpf VARCHAR(11) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  birth_date DATE NOT NULL,
+  phone VARCHAR(11) NOT NULL,
   balance DECIMAL(15,2) NOT NULL DEFAULT 0.00,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_cpf (cpf),
+  INDEX idx_email (email)
 ) ENGINE=InnoDB;
 
 -- Tabela de transações
@@ -19,7 +25,10 @@ CREATE TABLE IF NOT EXISTS transactions (
   amount DECIMAL(15,2) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (from_account_id) REFERENCES accounts(id) ON DELETE SET NULL ON UPDATE CASCADE,
-  FOREIGN KEY (to_account_id) REFERENCES accounts(id) ON DELETE SET NULL ON UPDATE CASCADE
+  FOREIGN KEY (to_account_id) REFERENCES accounts(id) ON DELETE SET NULL ON UPDATE CASCADE,
+  INDEX idx_from_account (from_account_id),
+  INDEX idx_to_account (to_account_id),
+  INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB;
 
 -- Stored procedure que retorna saldo e últimas 10 transações (duas SELECTs)
